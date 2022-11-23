@@ -5,20 +5,47 @@ from ..model.deck import Deck
 from ..model.hand import Hand
 
 @pytest.fixture
+def get_blackjack(get_deck):
+    deck = get_deck
+    haveAce, haveTen = False, False
+    cards = []
+    for card in deck.cards:
+        if card.val == 1 and not haveAce:
+            cards.append(card)
+            haveAce = True
+        if card.val == 10 and not haveTen:
+            cards.append(card)
+            haveTen = True
+    assert len(cards) == 2
+    assert cards[0].val in [1,10]
+    assert cards[1].val in [1,10]
+    assert cards[0].val != cards[1].val
+    return cards
+
+@pytest.fixture
 def get_pairOfeights(get_deck):
     deck = get_deck
     cards = []
     for card in deck.cards:
         if (card.name == '8' and len(cards)< 2):
             cards.append(card)
+    assert len(cards) == 2
+    assert cards[0].val == 8
+    assert cards[1].val == 8
     return cards
 
+@pytest.fixture
+def get_ace(get_deck):
+    deck = get_deck
+    for card in deck.cards:
+        if card.name == 'Ace':
+            return card
 
 @pytest.fixture
 def get_deck():
-    return Deck() 
+    return Deck()
 
-def test_hand(get_deck):
+def test_total(get_deck):
     h = Hand()
     deck = get_deck
     c1 = deck.GetCard()
@@ -26,29 +53,19 @@ def test_hand(get_deck):
     h.Add(c1)
     h.Add(c2)
     
-    # Test split
-    if len(h.cards) == 2 and (h.cards[0].name == h.cards[1].name):
-        assert h.canSplit == True
-    else:
-        assert h.canSplit == False
-    
     # hand total
     assert h.total == c1.val + c2.val
 
-    # Test blackjack
-    if h.total == 21:
-        assert h.blackjack == True
-    else:
-        assert h.blackjack == False
+def test_blackjack(get_blackjack):
+    h = Hand()
+    for card in get_blackjack:
+        h.Add(card)
+    assert h.blackjack
 
-def test_deck(get_deck):
-    deck : Deck
-    deck = get_deck
-    clubs = 0
-    assert deck.Count() == 52
-    # test card decrement
-    card = deck.GetCard()
-    assert deck.Count() == 51
+def test_ace(get_ace):
+    h = Hand()
+    h.Add(get_ace)
+    assert h.hasAce
 
 def test_split(get_pairOfeights):
     h = Hand()
