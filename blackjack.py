@@ -14,10 +14,15 @@ from model.hand import Hand
 YES = ['Y','y','Yes','YES', 'yes']
 player_hands = []
 
-def deal (hand: Hand, deck : Deck):
+def deal (hand: Hand, deck : Deck, debug : bool = False):
    
     stay = False
     hand.Add(deck.GetCard())
+
+    #keep dealing player hand until matching pair in debug mode
+    if not hand.canSplit and debug:
+        Play(True)
+
     if (hand.canSplit):
         print(hand.Summary())        
         print("Split, Y?")
@@ -38,7 +43,7 @@ def deal (hand: Hand, deck : Deck):
             stay = True   
     print(hand.Summary())
 
-def Play():
+def Play(debug : bool = False):
 
     #local vars
     deck = Deck()
@@ -48,7 +53,7 @@ def Play():
     dealer_stay = False
 
     player_hand = Hand(None)  
-    player_hands = []
+    #player_hands = []
 
     print('\n\n')
     print('###### ################# #######')
@@ -70,12 +75,10 @@ def Play():
         dealer_stay = True 
         if dealer_hand.blackjack:
             print(f'Dealer Backjack!\n{dealer_hand}')
-            return
 
     print(f'\n\nDealer shows:\n\n{dealer_hand.Cards()[0]}')
    
-    # start dealing player
-    deal(player_hand, deck)
+    deal(player_hand, deck, debug)
  
      # Final summary if staying before and further deal
      # Only after player has gone
@@ -92,21 +95,23 @@ def Play():
             dealer_stay = True 
 
     # Final output
-    if len(player_hands)> 1:
-        print("multi hands")
-
-    for pHand in player_hands:
+    for idx, pHand in enumerate(player_hands):
         if (pHand.bust and dealer_hand.bust) or (dealer_hand.total == pHand.total):
-            print('Push ******************')
+            print(f'Hand {idx}: Push ******************')
         
         elif pHand.bust or (dealer_hand.total >= pHand.total and not dealer_hand.bust):       
-            print(f'Dealer wins *************** {dealer_hand.total}, vs {player_hand.total} ***********************')
+            print(f'Hand {idx}: Dealer wins *************** {dealer_hand.total}, vs {player_hand.total} ***********************')
       
         else:
-            print(f'Player wins *************** {pHand.total} vs {dealer_hand.total} ************************')
+            print(f'Hand {idx}: Player wins *************** {pHand.total} vs {dealer_hand.total} ************************')
 
 if __name__ == "__main__":
-    
+
     while(True):
         time.sleep(2)
-        Play()
+        # Debug mode
+        #Play(True)
+        #player_hands = []
+        # Regular mode
+        Play(False)
+        player_hands = []
