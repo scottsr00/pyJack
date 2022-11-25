@@ -10,6 +10,8 @@ import time
 from model.deck import Deck
 from model.card import Card
 from model.hand import Hand
+from model.chip import Chip
+from model.chipstack import Chipstack
 
 YES = ['Y','y','Yes','YES', 'yes']
 player_hands = []
@@ -105,7 +107,22 @@ def Play(debug : bool = False):
         else:
             print(f'Hand {idx}: Player wins *************** {pHand.total} vs {dealer_hand.total} ************************')
 
+def Bet(chipstack : Chipstack):
+    
+    print(f'What is your bet?')
+    bet = input()
+    try:
+        chipstack.Remove(bet)
+    except:
+        print(f'Invalid bet')
+    
 if __name__ == "__main__":
+    chipstack = Chipstack()
+    print(f'Initializing chipstack...')
+    chipstack.Create(100, 1)
+    print(f'You have: {chipstack.GetTotal()} chips.')
+
+    Bet(chipstack)
 
     while(True):
         time.sleep(2)
