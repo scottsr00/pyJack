@@ -1,5 +1,5 @@
 import pytest
-
+import pdb
 from ..model.chip import Chip
 from ..model.chipstack import Chipstack
 

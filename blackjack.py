@@ -108,7 +108,7 @@ def Play(debug : bool = False):
 def Bet(chipstack : Chipstack):
     # logic for running pre-deal bet
     print(f'What is your bet?')
-    bet = input()
+    bet = int(input())
     try:
         chipstack.Remove(bet)
     except:
@@ -117,7 +117,7 @@ def Bet(chipstack : Chipstack):
 if __name__ == "__main__":
     chipstack = Chipstack()
     print(f'Initializing chipstack...')
-    chipstack.Create(100, 1)
+    chipstack.Create(100000, 1)
     print(f'You have: {chipstack.GetTotal()} chips.')
 
     Bet(chipstack)

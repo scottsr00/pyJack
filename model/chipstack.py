@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from .chip import Chip
+import pdb
 
 @dataclass
 class Chipstack:    
 
     chipstack = []
-
+    
     def Create(self, no, val):
         for i in range(no):
             chip = Chip(val)
@@ -24,11 +25,25 @@ class Chipstack:
         for chip in chips:
             self.chipstack.append(chip)
 
+    def clean(self):
+        cleanstack = []
+        for chip in self.chipstack:
+            if chip.val > 0:
+                cleanstack.append(chip)
+        self.chipstack = cleanstack
+
+
     def Remove(self, amountToRemove) -> int:
         removed = 0
+    
         for chip in self.chipstack:
             if removed < amountToRemove:
                 if chip.val <= (amountToRemove - removed):
-                    self.chipstack.remove(chip)
-                    removed += chip.val 
+                    removed += chip.val
+                    chip.val = 0
+            else:
+                break
+        self.clean()      
         return removed
+    
+    

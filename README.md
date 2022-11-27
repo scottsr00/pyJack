@@ -16,5 +16,9 @@ deal (takes hand with 1 card
             if HIT
                 deal card
     
+    ## git commands reminder
+    git add --all (new files)
+    git commit -m "some msg"
+    git push origin main
     
     
