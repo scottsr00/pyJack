@@ -100,15 +100,13 @@ def Play(debug : bool = False):
     for idx, pHand in enumerate(player_hands):
         if (pHand.bust and dealer_hand.bust) or (dealer_hand.total == pHand.total):
             print(f'Hand {idx}: Push ******************')
-        
         elif pHand.bust or (dealer_hand.total >= pHand.total and not dealer_hand.bust):       
             print(f'Hand {idx}: Dealer wins *************** {dealer_hand.total}, vs {player_hand.total} ***********************')
-      
         else:
             print(f'Hand {idx}: Player wins *************** {pHand.total} vs {dealer_hand.total} ************************')
 
 def Bet(chipstack : Chipstack):
-    
+    # logic for running pre-deal bet
     print(f'What is your bet?')
     bet = input()
     try:
