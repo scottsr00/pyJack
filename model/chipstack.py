@@ -10,7 +10,7 @@ class Chipstack:
         for i in range(no):
             chip = Chip(val)
             self.chipstack.append(chip)
-            
+
     def GetCount(self) -> int:
         return len(self.chipstack)
  
@@ -20,7 +20,7 @@ class Chipstack:
             total += chip.val
         return total
 
-    def Add(self, chips):
+    def Add(self, chips):                  
         for chip in chips:
             self.chipstack.append(chip)
 
