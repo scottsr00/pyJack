@@ -1,4 +1,5 @@
 import random
+import sys
 from dataclasses import dataclass
 from typing import List
 from .card import Card
@@ -16,11 +17,15 @@ class Deck:
         return self.cards.pop()
     
     def Shuffle(self):
-        xcards = []
-        while (len(self.cards) > 0):
-            xcards.append(self.cards.pop(random.randint(0, len(self.cards)-1)))
-        self.cards = xcards
-        return xcards
+        try:
+            xcards = []
+            while (len(self.cards) > 0):
+                xcards.append(self.cards.pop(random.randint(0, len(self.cards)-1)))
+            self.cards = xcards
+            return xcards
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            raise
 
     def Add(self,card):
         self.cards.append(card)
