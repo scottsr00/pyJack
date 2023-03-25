@@ -30,7 +30,10 @@ class Chipstack:
         for chip in self.chipstack:
             if chip.val > 0:
                 cleanstack.append(chip)
+            else:
+                print("Chip with value 0 or less found and discarded")
         self.chipstack = cleanstack
+
 
 
     def Remove(self, amountToRemove) -> int:

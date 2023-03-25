@@ -1,6 +1,7 @@
 ## blackjack
 ## Stephen Scott Nov 6 2022
 ## time box: 1 day
+## clean up this code
 
 import sys
 from dataclasses import dataclass
@@ -17,6 +18,10 @@ YES = ['Y','y','Yes','YES', 'yes']
 player_hands = []
 
 def deal (hand: Hand, deck : Deck, debug : bool = False):
+    if debug:
+        print("Dealing the following cards:")
+        print(hand)
+        print(deck)
    
     stay = False
     hand.Add(deck.GetCard())
@@ -55,7 +60,6 @@ def Play(debug : bool = False):
     dealer_stay = False
 
     player_hand = Hand(None)  
-    #player_hands = []
 
     print('\n\n')
     print('###### ################# #######')
@@ -63,21 +67,21 @@ def Play(debug : bool = False):
     print('###### ################# #######')
 
     # Initial Deal
-    for _ in range(4):
-        if (_ < 2):
-            dealer_hand.Add(deck.GetCard())
+    for _ in range(2):
+        dealer_hand.Add(deck.GetCard())
 
     # Add the initial deal to the set of potential player hands
     player_hand.Add(deck.GetCard())
     player_hands.append(player_hand)
 
     # Dealer stay 17 or blackjack
-    # fix this ... you can still play, only if A showing can you buy insurance
+    # fix this ... can you buy insurance?
     if dealer_hand.total >=17:
         dealer_stay = True 
         if dealer_hand.blackjack:
             print(f'Dealer Backjack!\n{dealer_hand}')
 
+    # Print the dealer's hand, with the first card hidden
     print(f'\n\nDealer shows:\n\n{dealer_hand.Cards()[0]}')
    
     deal(player_hand, deck, debug)
@@ -113,8 +117,12 @@ def Bet(chipstack : Chipstack):
         chipstack.Remove(bet)
     except:
         print(f'Invalid bet')
-    
-if __name__ == "__main__":
+
+#                         
+# Main execution and play 
+#                         
+def Start() -> int:
+
     chipstack = Chipstack()
     print(f'Initializing chipstack...')
     chipstack.Create(100000, 1)
@@ -130,3 +138,8 @@ if __name__ == "__main__":
         # Regular mode
         Play(False)
         player_hands = []
+        
+    return 1
+
+if __name__ == "__main__":
+    Start()
